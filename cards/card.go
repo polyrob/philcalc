@@ -9,14 +9,14 @@ var (
 	cardSuits  = []string{Hearts, Diamonds, Clubs, Spades}
 )
 
-var suits = map[string]string{
+var cardSuitMap = map[string]string{
 	Hearts:   "Hearts",
 	Diamonds: "Diamonds",
 	Clubs:    "Clubs",
 	Spades:   "Spades",
 }
 
-var values = map[int]string{
+var cardValueMap = map[int]string{
 	1:     "Ace",
 	2:     "2",
 	3:     "3",
@@ -49,6 +49,14 @@ type card struct {
 	suit  string
 }
 
+func (c card) DisplayValue() string {
+	return cardValueMap[c.value]
+}
+
+func (c card) DisplaySuit() string {
+	return cardSuitMap[c.suit]
+}
+
 func (c card) String() string {
-	return fmt.Sprintf("%s of %s", values[c.value], suits[c.suit])
+	return fmt.Sprintf("%s of %s", cardValueMap[c.value], cardSuitMap[c.suit])
 }

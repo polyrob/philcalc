@@ -1,6 +1,7 @@
 package cards
 
 import (
+	"fmt"
 	"sort"
 )
 
@@ -15,6 +16,10 @@ const (
 	FourOfAKind
 	StraightFlush
 )
+
+func (w pokerHandType) String() string {
+	return [...]string{"High Card", "Pair", "Two Pair", "Three-Of-A-Kind", "Straight", "Flush", "Full House", "Four-Of-A-Kind", "Straight Flush"}[w]
+}
 
 type pokerHandType int
 
@@ -147,16 +152,18 @@ func GetPokerHand(cards []card) Eval {
 					}
 				}
 			}
+		}
+	}
 
-			// just a pair then
-			for _, c := range cards {
-				if c.value != bestCards[0].value {
-					bestCards = append(bestCards, c)
-					if len(bestCards) == 5 {
-						return Eval{
-							pokerHandType: Pair,
-							cards:         bestCards,
-						}
+	if bestCards != nil {
+		// just a pair then
+		for _, c := range cards {
+			if c.value != bestCards[0].value {
+				bestCards = append(bestCards, c)
+				if len(bestCards) == 5 {
+					return Eval{
+						pokerHandType: Pair,
+						cards:         bestCards,
 					}
 				}
 			}
@@ -263,4 +270,20 @@ func evalFlush(cards []card) (bool, []card) {
 	}
 
 	return false, nil
+}
+
+func (e Eval) String() string {
+	switch e.pokerHandType {
+	case FullHouse:
+		return fmt.Sprintf("%s - %ss full of %ss", e.pokerHandType.String(), e.cards[0].DisplayValue(), e.cards[4].DisplayValue())
+	case FourOfAKind:
+		return fmt.Sprintf("%s - %ss", e.pokerHandType.String(), e.cards[0].DisplayValue())
+	case ThreeOfAKind:
+		return fmt.Sprintf("%s - %ss", e.pokerHandType.String(), e.cards[0].DisplayValue())
+	case TwoPair:
+		return fmt.Sprintf("%s - %ss and %ss with a %s kicker", e.pokerHandType.String(), e.cards[0].DisplayValue(), e.cards[2].DisplayValue(), e.cards[4].DisplayValue())
+	case Flush:
+		return fmt.Sprintf("%s (%s) - %s high", e.pokerHandType.String(), e.cards[0].DisplaySuit(), e.cards[0].DisplayValue())
+	}
+	return fmt.Sprintf("%s - %s high", e.pokerHandType.String(), e.cards[0].DisplayValue())
 }

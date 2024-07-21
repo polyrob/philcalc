@@ -129,6 +129,7 @@ func TestStraightFlush(t *testing.T) {
 		{10, Hearts},
 	}
 	assert.Equal(t, expectedCards, eval.cards)
+	assert.Equal(t, "Straight Flush - Ace high", eval.String())
 }
 
 func TestFourOfAKind(t *testing.T) {
@@ -143,6 +144,7 @@ func TestFourOfAKind(t *testing.T) {
 		{Ace, Hearts},
 	}
 	assert.Equal(t, expectedCards, eval.cards)
+	assert.Equal(t, "Four-Of-A-Kind - 7s", eval.String())
 }
 
 func TestFullHouse(t *testing.T) {
@@ -157,6 +159,7 @@ func TestFullHouse(t *testing.T) {
 		{3, Clubs},
 	}
 	assert.Equal(t, expectedCards, eval.cards)
+	assert.Equal(t, "Full House - 7s full of 3s", eval.String())
 }
 
 func TestFullHouseMulti(t *testing.T) {
@@ -171,6 +174,7 @@ func TestFullHouseMulti(t *testing.T) {
 		{3, Clubs},
 	}
 	assert.Equal(t, expectedCards, eval.cards)
+	assert.Equal(t, "Full House - 7s full of 3s", eval.String())
 }
 
 func TestFlush(t *testing.T) {
@@ -185,6 +189,7 @@ func TestFlush(t *testing.T) {
 		{4, Hearts},
 	}
 	assert.Equal(t, expectedCards, eval.cards)
+	assert.Equal(t, "Flush (Hearts) - Ace high", eval.String())
 }
 
 func TestLowStraight(t *testing.T) {
@@ -196,9 +201,10 @@ func TestLowStraight(t *testing.T) {
 		{4, Clubs},
 		{3, Diamonds},
 		{2, Clubs},
-		{1, Hearts}, // Todo
+		{1, Hearts}, // Todo okay keeping the ace is a different card struct?
 	}
 	assert.Equal(t, expectedCards, eval.cards)
+	assert.Equal(t, "Straight - 5 high", eval.String())
 }
 
 func TestHighStraight(t *testing.T) {
@@ -213,6 +219,7 @@ func TestHighStraight(t *testing.T) {
 		{10, Clubs},
 	}
 	assert.Equal(t, expectedCards, eval.cards)
+	assert.Equal(t, "Straight - Ace high", eval.String())
 }
 
 func TestThreeOfAKind(t *testing.T) {
@@ -227,6 +234,7 @@ func TestThreeOfAKind(t *testing.T) {
 		{7, Clubs},
 	}
 	assert.Equal(t, expectedCards, eval.cards)
+	assert.Equal(t, "Three-Of-A-Kind - 9s", eval.String())
 }
 
 func TestTwoPair(t *testing.T) {
@@ -241,6 +249,7 @@ func TestTwoPair(t *testing.T) {
 		{7, Clubs},
 	}
 	assert.Equal(t, expectedCards, eval.cards)
+	assert.Equal(t, "Two Pair - Kings and 9s with a 7 kicker", eval.String())
 }
 
 func TestSinglePair(t *testing.T) {
@@ -255,6 +264,7 @@ func TestSinglePair(t *testing.T) {
 		{8, Clubs},
 	}
 	assert.Equal(t, expectedCards, eval.cards)
+	assert.Equal(t, "Pair - King high", eval.String())
 }
 
 func TestHighCard(t *testing.T) {
@@ -269,4 +279,5 @@ func TestHighCard(t *testing.T) {
 		{4, Spades},
 	}
 	assert.Equal(t, expectedCards, eval.cards)
+	assert.Equal(t, "High Card - Queen high", eval.String())
 }
