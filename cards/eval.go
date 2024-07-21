@@ -112,6 +112,43 @@ func GetPokerHand(cards []card) Eval {
 	}
 
 	// check 3 of a kind
+	for _, cardSet := range cardSets {
+		if len(cardSet) == 3 {
+			// best kickers
+			for _, c := range cards {
+				if c.value != cardSet[0].value {
+					cardSet = append(cardSet, c)
+					if len(cardSet) == 5 {
+						return Eval{
+							pokerHandType: ThreeOfAKind,
+							cards:         cardSet,
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// check two pair
+	var bestCards []card
+	for _, cardSet := range cardSets {
+		if len(cardSet) == 2 {
+			// find another pair
+			bestCards = append(bestCards, cardSet...)
+			if len(bestCards) == 4 {
+				// best kicker
+				for _, c := range cards {
+					if c.value != bestCards[0].value && c.value != bestCards[2].value {
+						bestCards = append(bestCards, c)
+						return Eval{
+							pokerHandType: TwoPair,
+							cards:         bestCards,
+						}
+					}
+				}
+			}
+		}
+	}
 
 	return Eval{}
 }

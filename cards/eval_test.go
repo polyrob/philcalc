@@ -77,6 +77,26 @@ var (
 		{2, Clubs},
 		{Jack, Hearts},
 	}
+
+	threeOfAKind = []card{
+		{Ace, Spades},
+		{3, Hearts},
+		{7, Clubs},
+		{9, Clubs},
+		{9, Diamonds},
+		{9, Clubs},
+		{2, Hearts},
+	}
+
+	twoPair = []card{
+		{9, Diamonds},
+		{King, Spades},
+		{3, Hearts},
+		{7, Clubs},
+		{King, Clubs},
+		{9, Clubs},
+		{2, Hearts},
+	}
 )
 
 func TestStraightFlush(t *testing.T) {
@@ -173,6 +193,34 @@ func TestHighStraight(t *testing.T) {
 		{Queen, Diamonds},
 		{Jack, Hearts},
 		{10, Clubs},
+	}
+	assert.Equal(t, expectedCards, eval.cards)
+}
+
+func TestThreeOfAKind(t *testing.T) {
+	eval := GetPokerHand(threeOfAKind)
+	assert.Equal(t, pokerHandType(ThreeOfAKind), eval.pokerHandType)
+
+	expectedCards := []card{
+		{9, Clubs},
+		{9, Diamonds},
+		{9, Clubs},
+		{Ace, Spades},
+		{7, Clubs},
+	}
+	assert.Equal(t, expectedCards, eval.cards)
+}
+
+func TestTwoPair(t *testing.T) {
+	eval := GetPokerHand(twoPair)
+	assert.Equal(t, pokerHandType(TwoPair), eval.pokerHandType)
+
+	expectedCards := []card{
+		{King, Spades},
+		{King, Clubs},
+		{9, Diamonds},
+		{9, Clubs},
+		{7, Clubs},
 	}
 	assert.Equal(t, expectedCards, eval.cards)
 }
