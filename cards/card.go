@@ -17,7 +17,7 @@ var suits = map[string]string{
 }
 
 var values = map[int]string{
-	1:     "1",
+	1:     "Ace",
 	2:     "2",
 	3:     "3",
 	4:     "4",

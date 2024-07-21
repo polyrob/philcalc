@@ -29,14 +29,14 @@ func GetPokerHand(cards []card) Eval {
 		return cards[i].value > cards[j].value
 	})
 
-	// check if strightflush
+	// check if straight flush
 	isFlush, flushCards := evalFlush(cards)
 	if isFlush {
 		// check if straight flush using just those cards
-		isStraight, straighFlushCards := evalStraight(flushCards)
+		isStraight, straightFlushCards := evalStraight(flushCards)
 		if isStraight {
 			// use only 5 highest
-			playingCards := getTopCards(straighFlushCards)
+			playingCards := getTopCards(straightFlushCards)
 			return Eval{
 				pokerHandType: StraightFlush,
 				cards:         playingCards,
@@ -68,17 +68,24 @@ func GetPokerHand(cards []card) Eval {
 	for _, cardSet := range cardSets {
 		if len(cardSet) == 3 {
 			// find another pair
+			var bestPair []card
 			for _, subCardSet := range cardSets {
 				if subCardSet[0].value == cardSet[0].value {
 					continue // ignore the 3 of a kind already
 				}
 
-				if len(subCardSet) == 2 {
-					cardSet = append(cardSet, subCardSet...)
-					return Eval{
-						pokerHandType: FullHouse,
-						cards:         cardSet,
+				if len(subCardSet) >= 2 {
+					if bestPair == nil || subCardSet[0].value > bestPair[0].value {
+						bestPair = subCardSet[0:2]
 					}
+				}
+			}
+
+			if bestPair != nil {
+				cardSet = append(cardSet, bestPair...)
+				return Eval{
+					pokerHandType: FullHouse,
+					cards:         cardSet,
 				}
 			}
 		}
@@ -99,10 +106,12 @@ func GetPokerHand(cards []card) Eval {
 		// use only 5 highest
 		playingCards := getTopCards(straightCards)
 		return Eval{
-			pokerHandType: StraightFlush,
+			pokerHandType: Straight,
 			cards:         playingCards,
 		}
 	}
+
+	// check 3 of a kind
 
 	return Eval{}
 }
@@ -132,31 +141,25 @@ func evalStraight(cards []card) (bool, []card) {
 
 	for _, c := range cards {
 		if c.value == 14 {
-			cards = append(cards, card{value: 1}) // add a "1" card with no suit
-			break
+			cards = append(cards, card{value: 1, suit: c.suit}) // fake a "1" card
 		}
 	}
 
-	var valuesOnly []int
-	for _, c := range cards {
-		valuesOnly = append(valuesOnly, c.value)
-	}
-	//sort.Sort(sort.Reverse(sort.IntSlice(valuesOnly)))
-	currentValue := valuesOnly[0]
-	inARow := 1
-	for i := 1; i < len(valuesOnly); i++ {
-		if valuesOnly[i] == currentValue {
+	currentValue := cards[0].value
+	var inARow = []card{cards[0]}
+	for i := 1; i < len(cards); i++ {
+		if cards[i].value == currentValue {
 			continue
 		}
-		if valuesOnly[i] == currentValue-1 {
-			inARow++
-			if inARow == 5 {
-				return true, cards
+		if cards[i].value == currentValue-1 {
+			inARow = append(inARow, cards[i])
+			if len(inARow) == 5 {
+				return true, inARow
 			}
 		} else {
-			inARow = 1
+			inARow = []card{cards[i]}
 		}
-		currentValue = valuesOnly[i]
+		currentValue = cards[i].value
 	}
 
 	return false, nil
