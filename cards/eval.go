@@ -147,10 +147,28 @@ func GetPokerHand(cards []card) Eval {
 					}
 				}
 			}
+
+			// just a pair then
+			for _, c := range cards {
+				if c.value != bestCards[0].value {
+					bestCards = append(bestCards, c)
+					if len(bestCards) == 5 {
+						return Eval{
+							pokerHandType: Pair,
+							cards:         bestCards,
+						}
+					}
+				}
+			}
 		}
 	}
 
-	return Eval{}
+	// high card
+	cards = cards[:5]
+	return Eval{
+		HighCard,
+		cards,
+	}
 }
 
 func evalPairings(cards []card) map[int][]card {
