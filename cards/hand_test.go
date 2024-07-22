@@ -17,5 +17,5 @@ func TestHandDisplay(t *testing.T) {
 		},
 	}
 	display := h.String()
-	assert.Equal(t, "4 of Hearts, 10 of Diamonds, Jack of Clubs, Queen of Spades, Ace of Hearts", display)
+	assert.Equal(t, "[4 of Hearts], [10 of Diamonds], [Jack of Clubs], [Queen of Spades], [Ace of Hearts]", display)
 }
