@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	straightFlush = []card{
+	straightFlush = []Card{
 		{7, Spades},
 		{Ace, Hearts},
 		{Queen, Hearts},
@@ -17,7 +17,7 @@ var (
 		{Jack, Hearts},
 	}
 
-	fourOfAKind = []card{
+	fourOfAKind = []Card{
 		{7, Spades},
 		{Ace, Hearts},
 		{Queen, Spades},
@@ -27,7 +27,7 @@ var (
 		{7, Hearts},
 	}
 
-	fullHouse = []card{
+	fullHouse = []Card{
 		{2, Spades},
 		{3, Hearts},
 		{3, Clubs},
@@ -38,7 +38,7 @@ var (
 	}
 
 	// 7s over 3s
-	fullHouseMult3 = []card{
+	fullHouseMult3 = []Card{
 		{2, Spades},
 		{3, Hearts},
 		{3, Clubs},
@@ -48,7 +48,7 @@ var (
 		{7, Hearts},
 	}
 
-	flush = []card{
+	flush = []Card{
 		{7, Spades},
 		{Ace, Hearts},
 		{Queen, Hearts},
@@ -58,7 +58,7 @@ var (
 		{4, Hearts},
 	}
 
-	lowStraight = []card{
+	lowStraight = []Card{
 		{7, Spades},
 		{Ace, Hearts},
 		{4, Clubs},
@@ -68,7 +68,7 @@ var (
 		{5, Hearts},
 	}
 
-	highStraight = []card{
+	highStraight = []Card{
 		{7, Spades},
 		{Ace, Hearts},
 		{Queen, Diamonds},
@@ -78,7 +78,7 @@ var (
 		{Jack, Hearts},
 	}
 
-	threeOfAKind = []card{
+	threeOfAKind = []Card{
 		{Ace, Spades},
 		{3, Hearts},
 		{7, Clubs},
@@ -88,7 +88,7 @@ var (
 		{2, Hearts},
 	}
 
-	twoPair = []card{
+	twoPair = []Card{
 		{9, Diamonds},
 		{King, Spades},
 		{3, Hearts},
@@ -98,7 +98,7 @@ var (
 		{2, Hearts},
 	}
 
-	singlePair = []card{
+	singlePair = []Card{
 		{9, Diamonds},
 		{King, Spades},
 		{3, Hearts},
@@ -108,7 +108,7 @@ var (
 		{2, Hearts},
 	}
 
-	highCardQueen = []card{
+	highCardQueen = []Card{
 		{Queen, Clubs},
 		{10, Clubs},
 		{9, Diamonds},
@@ -116,7 +116,7 @@ var (
 		{4, Spades},
 	}
 
-	highCardQueenJack = []card{
+	highCardQueenJack = []Card{
 		{Queen, Clubs},
 		{2, Clubs},
 		{9, Diamonds},
@@ -129,7 +129,7 @@ func TestStraightFlush(t *testing.T) {
 	eval := GetPokerHand(straightFlush)
 	assert.Equal(t, pokerHandType(StraightFlush), eval.pokerHandType)
 
-	expectedCards := []card{
+	expectedCards := []Card{
 		{Ace, Hearts},
 		{King, Hearts},
 		{Queen, Hearts},
@@ -144,7 +144,7 @@ func TestFourOfAKind(t *testing.T) {
 	eval := GetPokerHand(fourOfAKind)
 	assert.Equal(t, pokerHandType(FourOfAKind), eval.pokerHandType)
 
-	expectedCards := []card{
+	expectedCards := []Card{
 		{7, Spades},
 		{7, Clubs},
 		{7, Diamonds},
@@ -159,7 +159,7 @@ func TestFullHouse(t *testing.T) {
 	eval := GetPokerHand(fullHouse)
 	assert.Equal(t, pokerHandType(FullHouse), eval.pokerHandType)
 
-	expectedCards := []card{
+	expectedCards := []Card{
 		{7, Clubs},
 		{7, Diamonds},
 		{7, Hearts},
@@ -174,7 +174,7 @@ func TestFullHouseMulti(t *testing.T) {
 	eval := GetPokerHand(fullHouseMult3)
 	assert.Equal(t, pokerHandType(FullHouse), eval.pokerHandType)
 
-	expectedCards := []card{
+	expectedCards := []Card{
 		{7, Clubs},
 		{7, Diamonds},
 		{7, Hearts},
@@ -189,7 +189,7 @@ func TestFlush(t *testing.T) {
 	eval := GetPokerHand(flush)
 	assert.Equal(t, pokerHandType(Flush), eval.pokerHandType)
 
-	expectedCards := []card{
+	expectedCards := []Card{
 		{Ace, Hearts},
 		{King, Hearts},
 		{Queen, Hearts},
@@ -204,12 +204,12 @@ func TestLowStraight(t *testing.T) {
 	eval := GetPokerHand(lowStraight)
 	assert.Equal(t, pokerHandType(Straight), eval.pokerHandType)
 
-	expectedCards := []card{
+	expectedCards := []Card{
 		{5, Hearts},
 		{4, Clubs},
 		{3, Diamonds},
 		{2, Clubs},
-		{1, Hearts}, // Todo okay keeping the ace is a different card struct?
+		{1, Hearts}, // Todo okay keeping the ace is a different Card struct?
 	}
 	assert.Equal(t, expectedCards, eval.cards)
 	assert.Equal(t, "Straight - 5 high", eval.String())
@@ -219,7 +219,7 @@ func TestHighStraight(t *testing.T) {
 	eval := GetPokerHand(highStraight)
 	assert.Equal(t, pokerHandType(Straight), eval.pokerHandType)
 
-	expectedCards := []card{
+	expectedCards := []Card{
 		{Ace, Hearts},
 		{King, Hearts},
 		{Queen, Diamonds},
@@ -234,7 +234,7 @@ func TestThreeOfAKind(t *testing.T) {
 	eval := GetPokerHand(threeOfAKind)
 	assert.Equal(t, pokerHandType(ThreeOfAKind), eval.pokerHandType)
 
-	expectedCards := []card{
+	expectedCards := []Card{
 		{9, Clubs},
 		{9, Diamonds},
 		{9, Clubs},
@@ -249,7 +249,7 @@ func TestTwoPair(t *testing.T) {
 	eval := GetPokerHand(twoPair)
 	assert.Equal(t, pokerHandType(TwoPair), eval.pokerHandType)
 
-	expectedCards := []card{
+	expectedCards := []Card{
 		{King, Spades},
 		{King, Clubs},
 		{9, Diamonds},
@@ -264,7 +264,7 @@ func TestSinglePair(t *testing.T) {
 	eval := GetPokerHand(singlePair)
 	assert.Equal(t, pokerHandType(Pair), eval.pokerHandType)
 
-	expectedCards := []card{
+	expectedCards := []Card{
 		{King, Spades},
 		{King, Clubs},
 		{Ace, Clubs},
@@ -279,7 +279,7 @@ func TestHighCard(t *testing.T) {
 	eval := GetPokerHand(highCardQueen)
 	assert.Equal(t, pokerHandType(HighCard), eval.pokerHandType)
 
-	expectedCards := []card{
+	expectedCards := []Card{
 		{Queen, Clubs},
 		{10, Clubs},
 		{9, Diamonds},

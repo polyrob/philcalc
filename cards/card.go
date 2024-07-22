@@ -1,7 +1,9 @@
 package cards
 
 import (
+	"errors"
 	"fmt"
+	"strconv"
 )
 
 var (
@@ -27,10 +29,10 @@ var cardValueMap = map[int]string{
 	8:     "8",
 	9:     "9",
 	10:    "10",
-	Jack:  "Jack",
-	Queen: "Queen",
-	King:  "King",
-	Ace:   "Ace",
+	Jack:  "J",
+	Queen: "Q",
+	King:  "K",
+	Ace:   "A",
 }
 
 const (
@@ -44,19 +46,46 @@ const (
 	Spades   = "s"
 )
 
-type card struct {
+type Card struct {
 	value int
 	suit  string
 }
 
-func (c card) DisplayValue() string {
+func (c Card) DisplayValue() string {
 	return cardValueMap[c.value]
 }
 
-func (c card) DisplaySuit() string {
+func (c Card) DisplaySuit() string {
 	return cardSuitMap[c.suit]
 }
 
-func (c card) String() string {
+func (c Card) String() string {
 	return fmt.Sprintf("[%s of %s]", cardValueMap[c.value], cardSuitMap[c.suit])
+}
+
+func ParseCard(s string) (*Card, error) {
+	if len(s) != 2 {
+		return nil, errors.New("invalid card")
+	}
+	valStr := string(s[0])
+	suit := string(s[1])
+
+	val, err := strconv.Atoi(valStr)
+	if err != nil {
+		if valStr == "A" {
+			val = Ace
+		} else if valStr == "K" {
+			val = King
+		} else if valStr == "Q" {
+			val = Queen
+		} else if valStr == "J" {
+			val = Jack
+		} else if valStr == "T" {
+			val = 10
+		}
+	}
+	return &Card{
+		value: val,
+		suit:  suit,
+	}, nil
 }

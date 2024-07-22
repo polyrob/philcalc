@@ -6,16 +6,16 @@ import (
 )
 
 type Hand struct {
-	cards []card
+	Cards []Card
 }
 
-func (h *Hand) acceptCard(c card) {
-	h.cards = append(h.cards, c)
+func (h *Hand) AcceptCard(c Card) {
+	h.Cards = append(h.Cards, c)
 }
 
 func (h *Hand) String() string {
 	var cardStrings []string
-	for _, c := range h.cards {
+	for _, c := range h.Cards {
 		cardStrings = append(cardStrings, c.String())
 	}
 	return fmt.Sprintf(strings.Join(cardStrings, ", "))

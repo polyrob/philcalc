@@ -25,10 +25,10 @@ type pokerHandType int
 
 type Eval struct {
 	pokerHandType pokerHandType
-	cards         []card // best 5 cards
+	cards         []Card // best 5 cards
 }
 
-func GetPokerHand(cards []card) Eval {
+func GetPokerHand(cards []Card) Eval {
 	// sort by highest value
 	sort.Slice(cards, func(i, j int) bool {
 		return cards[i].value > cards[j].value
@@ -37,7 +37,7 @@ func GetPokerHand(cards []card) Eval {
 	// check if straight flush
 	isFlush, flushCards := evalFlush(cards)
 	if isFlush {
-		// check if straight flush using just those cards
+		// check if straight flush using just those Cards
 		isStraight, straightFlushCards := evalStraight(flushCards)
 		if isStraight {
 			// use only 5 highest
@@ -49,7 +49,7 @@ func GetPokerHand(cards []card) Eval {
 		}
 	}
 
-	// check occurrences of pairing cards
+	// check occurrences of pairing Cards
 	cardSets := evalPairings(cards)
 
 	// check 4 of a kind
@@ -58,7 +58,7 @@ func GetPokerHand(cards []card) Eval {
 			// find the kicker
 			for _, c := range cards {
 				if c != cardSet[0] {
-					// this is the next highest card not in of-a-kind set
+					// this is the next highest Card not in of-a-kind set
 					cardSet = append(cardSet, c)
 					return Eval{
 						pokerHandType: FourOfAKind,
@@ -73,7 +73,7 @@ func GetPokerHand(cards []card) Eval {
 	for _, cardSet := range cardSets {
 		if len(cardSet) == 3 {
 			// find another pair
-			var bestPair []card
+			var bestPair []Card
 			for _, subCardSet := range cardSets {
 				if subCardSet[0].value == cardSet[0].value {
 					continue // ignore the 3 of a kind already
@@ -135,8 +135,8 @@ func GetPokerHand(cards []card) Eval {
 	}
 
 	// check two pair
-	var bestCards []card
-	var pairs [][]card
+	var bestCards []Card
+	var pairs [][]Card
 	for _, cardSet := range cardSets {
 		if len(cardSet) == 2 {
 			pairs = append(pairs, cardSet)
@@ -176,44 +176,44 @@ func GetPokerHand(cards []card) Eval {
 		}
 	}
 
-	// high card
+	// high Card
 	return Eval{
 		HighCard,
 		cards[:5],
 	}
 }
 
-func evalPairings(cards []card) map[int][]card {
-	cardSets := make(map[int][]card)
+func evalPairings(cards []Card) map[int][]Card {
+	cardSets := make(map[int][]Card)
 	for _, c := range cards {
 		v := c.value
 		if set, ok := cardSets[v]; ok {
 			cardSets[v] = append(set, c)
 		} else {
-			cardSets[v] = []card{c}
+			cardSets[v] = []Card{c}
 		}
 	}
 	return cardSets
 }
 
 // already in order presumably
-func getTopCards(cards []card) []card {
+func getTopCards(cards []Card) []Card {
 	return cards[0:5]
 }
 
-func evalStraight(cards []card) (bool, []card) {
+func evalStraight(cards []Card) (bool, []Card) {
 	if len(cards) < 5 {
 		return false, nil
 	}
 
 	for _, c := range cards {
 		if c.value == 14 {
-			cards = append(cards, card{value: 1, suit: c.suit}) // fake a "1" card
+			cards = append(cards, Card{value: 1, suit: c.suit}) // fake a "1" Card
 		}
 	}
 
 	currentValue := cards[0].value
-	var inARow = []card{cards[0]}
+	var inARow = []Card{cards[0]}
 	for i := 1; i < len(cards); i++ {
 		if cards[i].value == currentValue {
 			continue
@@ -224,7 +224,7 @@ func evalStraight(cards []card) (bool, []card) {
 				return true, inARow
 			}
 		} else {
-			inARow = []card{cards[i]}
+			inARow = []Card{cards[i]}
 		}
 		currentValue = cards[i].value
 	}
@@ -232,16 +232,16 @@ func evalStraight(cards []card) (bool, []card) {
 	return false, nil
 }
 
-func evalFlush(cards []card) (bool, []card) {
+func evalFlush(cards []Card) (bool, []Card) {
 	if len(cards) < 5 {
 		return false, nil
 	}
 
 	var (
-		hearts   []card
-		diamonds []card
-		clubs    []card
-		spades   []card
+		hearts   []Card
+		diamonds []Card
+		clubs    []Card
+		spades   []Card
 	)
 
 	for _, card := range cards {
@@ -302,7 +302,7 @@ func Beats(e1, e2 Eval) int {
 		}
 	}
 
-	// if cards are of same type, look for high card
+	// if Cards are of same type, look for high Card
 	for i := 0; i < len(e1.cards); i++ {
 		if e1.cards[i].value == e2.cards[i].value {
 			continue

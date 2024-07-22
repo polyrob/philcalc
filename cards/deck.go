@@ -5,15 +5,15 @@ import (
 )
 
 type Deck struct {
-	cards []card
+	cards []Card
 }
 
 func NewDeck() Deck {
-	deck := make([]card, 52)
+	deck := make([]Card, 52)
 	i := 0
 	for _, suit := range cardSuits {
 		for _, cardValue := range cardValues {
-			card := card{value: cardValue, suit: suit}
+			card := Card{value: cardValue, suit: suit}
 			deck[i] = card
 			i++
 		}
@@ -25,12 +25,12 @@ func NewDeck() Deck {
 	return Deck{deck}
 }
 
-func NewDeckWithoutDelt(alreadyDelt []card) Deck {
-	deck := make([]card, 52-len(alreadyDelt))
+func NewDeckWithoutDelt(alreadyDelt []Card) Deck {
+	deck := make([]Card, 52-len(alreadyDelt))
 	i := 0
 	for _, suit := range cardSuits {
 		for _, cardValue := range cardValues {
-			card := card{value: cardValue, suit: suit}
+			card := Card{value: cardValue, suit: suit}
 			delt := false
 			for _, deltCard := range alreadyDelt {
 				if card == deltCard {
@@ -51,7 +51,7 @@ func NewDeckWithoutDelt(alreadyDelt []card) Deck {
 	return Deck{deck}
 }
 
-func (d *Deck) dealCard() card {
+func (d *Deck) DealCard() Card {
 	n := len(d.cards)
 	poppedCard := (d.cards)[n-1]
 	d.cards = (d.cards)[:n-1]

@@ -10,13 +10,13 @@ func TestDealCards(t *testing.T) {
 	deck := NewDeck()
 	assert.Equal(t, 52, len(deck.cards))
 
-	deltCard := deck.dealCard()
+	deltCard := deck.DealCard()
 	assert.NotEqual(t, deltCard.suit, "")
 	assert.Equal(t, len(deck.cards), 51)
 }
 
 func TestNewDeckWithoutDelt(t *testing.T) {
-	alreadyDeltCards := []card{
+	alreadyDeltCards := []Card{
 		{Ace, Hearts},
 		{5, Diamonds},
 	}
@@ -26,7 +26,7 @@ func TestNewDeckWithoutDelt(t *testing.T) {
 	for _, c := range deck.cards {
 		for _, delt := range alreadyDeltCards {
 			if c == delt {
-				assert.Fail(t, "This card should have already been delt and not in the deck", delt)
+				assert.Fail(t, "This Card should have already been delt and not in the deck", delt)
 			}
 		}
 	}

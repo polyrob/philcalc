@@ -8,7 +8,7 @@ import (
 
 func TestHandDisplay(t *testing.T) {
 	h := Hand{
-		cards: []card{
+		Cards: []Card{
 			{4, "h"},
 			{10, "d"},
 			{11, "c"},
