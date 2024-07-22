@@ -117,7 +117,6 @@ func GetPokerHand(cards []card) Eval {
 	}
 
 	// check 3 of a kind
-	var bestCards []card
 	for _, cardSet := range cardSets {
 		if len(cardSet) == 3 {
 			// best kickers
@@ -136,27 +135,34 @@ func GetPokerHand(cards []card) Eval {
 	}
 
 	// check two pair
+	var bestCards []card
+	var pairs [][]card
 	for _, cardSet := range cardSets {
 		if len(cardSet) == 2 {
-			// find another pair
-			bestCards = append(bestCards, cardSet...)
-			if len(bestCards) == 4 {
-				// best kicker
-				for _, c := range cards {
-					if c.value != bestCards[0].value && c.value != bestCards[2].value {
-						bestCards = append(bestCards, c)
-						return Eval{
-							pokerHandType: TwoPair,
-							cards:         bestCards,
-						}
-					}
+			pairs = append(pairs, cardSet)
+		}
+	}
+	sort.Slice(pairs, func(i, j int) bool {
+		return pairs[i][0].value > pairs[j][0].value
+	})
+
+	if len(pairs) > 1 {
+		// find another pair
+		bestCards = append(bestCards, pairs[0]...)
+		bestCards = append(bestCards, pairs[1]...)
+		// best kicker
+		for _, c := range cards {
+			if c.value != bestCards[0].value && c.value != bestCards[2].value {
+				bestCards = append(bestCards, c)
+				return Eval{
+					pokerHandType: TwoPair,
+					cards:         bestCards,
 				}
 			}
 		}
-	}
-
-	if bestCards != nil {
+	} else if len(pairs) == 1 {
 		// just a pair then
+		bestCards = append(bestCards, pairs[0]...)
 		for _, c := range cards {
 			if c.value != bestCards[0].value {
 				bestCards = append(bestCards, c)
@@ -171,10 +177,9 @@ func GetPokerHand(cards []card) Eval {
 	}
 
 	// high card
-	cards = cards[:5]
 	return Eval{
 		HighCard,
-		cards,
+		cards[:5],
 	}
 }
 
