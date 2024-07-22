@@ -117,6 +117,7 @@ func GetPokerHand(cards []card) Eval {
 	}
 
 	// check 3 of a kind
+	var bestCards []card
 	for _, cardSet := range cardSets {
 		if len(cardSet) == 3 {
 			// best kickers
@@ -135,7 +136,6 @@ func GetPokerHand(cards []card) Eval {
 	}
 
 	// check two pair
-	var bestCards []card
 	for _, cardSet := range cardSets {
 		if len(cardSet) == 2 {
 			// find another pair
@@ -286,4 +286,27 @@ func (e Eval) String() string {
 		return fmt.Sprintf("%s (%s) - %s high", e.pokerHandType.String(), e.cards[0].DisplaySuit(), e.cards[0].DisplayValue())
 	}
 	return fmt.Sprintf("%s - %s high", e.pokerHandType.String(), e.cards[0].DisplayValue())
+}
+
+func Beats(e1, e2 Eval) int {
+	if e1.pokerHandType != e2.pokerHandType {
+		if e1.pokerHandType > e2.pokerHandType {
+			return 1
+		} else {
+			return -1
+		}
+	}
+
+	// if cards are of same type, look for high card
+	for i := 0; i < len(e1.cards); i++ {
+		if e1.cards[i].value == e2.cards[i].value {
+			continue
+		}
+		if e1.cards[i].value > e2.cards[i].value {
+			return 1
+		} else {
+			return -1
+		}
+	}
+	return 0 // push
 }

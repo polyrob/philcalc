@@ -108,11 +108,19 @@ var (
 		{2, Hearts},
 	}
 
-	highCard = []card{
+	highCardQueen = []card{
 		{Queen, Clubs},
 		{10, Clubs},
 		{9, Diamonds},
 		{8, Clubs},
+		{4, Spades},
+	}
+
+	highCardQueenJack = []card{
+		{Queen, Clubs},
+		{2, Clubs},
+		{9, Diamonds},
+		{Jack, Clubs},
 		{4, Spades},
 	}
 )
@@ -268,7 +276,7 @@ func TestSinglePair(t *testing.T) {
 }
 
 func TestHighCard(t *testing.T) {
-	eval := GetPokerHand(highCard)
+	eval := GetPokerHand(highCardQueen)
 	assert.Equal(t, pokerHandType(HighCard), eval.pokerHandType)
 
 	expectedCards := []card{
@@ -280,4 +288,32 @@ func TestHighCard(t *testing.T) {
 	}
 	assert.Equal(t, expectedCards, eval.cards)
 	assert.Equal(t, "High Card - Queen high", eval.String())
+}
+
+func TestBeats(t *testing.T) {
+	highCardQueenE := GetPokerHand(highCardQueen)
+	singlePairE := GetPokerHand(singlePair)
+	twoPairE := GetPokerHand(twoPair)
+	threeOfAKindE := GetPokerHand(threeOfAKind)
+	lowStraightE := GetPokerHand(lowStraight)
+	highStraightE := GetPokerHand(highStraight)
+	flushE := GetPokerHand(flush)
+	fullHouseE := GetPokerHand(fullHouse)
+	fourOfAKindE := GetPokerHand(fourOfAKind)
+	straightFlushE := GetPokerHand(straightFlush)
+
+	assert.Positive(t, Beats(straightFlushE, fourOfAKindE))
+	assert.Positive(t, Beats(fourOfAKindE, fullHouseE))
+	assert.Positive(t, Beats(fullHouseE, flushE))
+	assert.Positive(t, Beats(flushE, highStraightE))
+	assert.Positive(t, Beats(highStraightE, lowStraightE))
+	assert.Positive(t, Beats(lowStraightE, threeOfAKindE))
+	assert.Positive(t, Beats(threeOfAKindE, twoPairE))
+	assert.Positive(t, Beats(twoPairE, singlePairE))
+	assert.Positive(t, Beats(singlePairE, highCardQueenE))
+	assert.Positive(t, Beats(GetPokerHand(highCardQueenJack), highCardQueenE))
+
+	assert.Negative(t, Beats(highCardQueenE, singlePairE))
+
+	assert.Zero(t, Beats(highCardQueenE, highCardQueenE))
 }
