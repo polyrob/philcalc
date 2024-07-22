@@ -29,10 +29,10 @@ var cardValueMap = map[int]string{
 	8:     "8",
 	9:     "9",
 	10:    "10",
-	Jack:  "J",
-	Queen: "Q",
-	King:  "K",
-	Ace:   "A",
+	Jack:  "Jack",
+	Queen: "Queen",
+	King:  "King",
+	Ace:   "Ace",
 }
 
 const (
