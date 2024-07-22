@@ -58,5 +58,5 @@ func (c card) DisplaySuit() string {
 }
 
 func (c card) String() string {
-	return fmt.Sprintf("%s of %s", cardValueMap[c.value], cardSuitMap[c.suit])
+	return fmt.Sprintf("[%s of %s]", cardValueMap[c.value], cardSuitMap[c.suit])
 }
