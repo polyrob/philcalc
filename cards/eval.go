@@ -289,7 +289,10 @@ func (e Eval) String() string {
 		return fmt.Sprintf("%s - %ss and %ss with a %s kicker", e.pokerHandType.String(), e.cards[0].DisplayValue(), e.cards[2].DisplayValue(), e.cards[4].DisplayValue())
 	case Flush:
 		return fmt.Sprintf("%s (%s) - %s high", e.pokerHandType.String(), e.cards[0].DisplaySuit(), e.cards[0].DisplayValue())
+	case Pair:
+		return fmt.Sprintf("%s - %ss with a %s kicker", e.pokerHandType.String(), e.cards[0].DisplayValue(), e.cards[2].DisplayValue())
 	}
+
 	return fmt.Sprintf("%s - %s high", e.pokerHandType.String(), e.cards[0].DisplayValue())
 }
 

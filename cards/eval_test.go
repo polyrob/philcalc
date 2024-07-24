@@ -272,7 +272,7 @@ func TestSinglePair(t *testing.T) {
 		{8, Clubs},
 	}
 	assert.Equal(t, expectedCards, eval.cards)
-	assert.Equal(t, "Pair - King high", eval.String())
+	assert.Equal(t, "Pair - Kings with a Ace kicker", eval.String())
 }
 
 func TestHighCard(t *testing.T) {
