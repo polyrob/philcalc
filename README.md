@@ -2,9 +2,9 @@
 
 ## heads up output
 ```shell
-──░ ./philcalc -runs=100000 -player=AhAd -opp=2d7h
+──░ ./philcalc -runs=10000 -player=AhAd -opp=2d7h
 Player hand: [Ace of Hearts], [Ace of Diamonds], opp hand: [2 of Diamonds], [7 of Hearts]
-Staring 100000 runs
+Staring 10000 runs
 ....................................................................................................
 ... ommiteed for brevity
 ....................................................................................................
